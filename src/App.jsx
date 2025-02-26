@@ -3,6 +3,7 @@ import { ReviewList } from "./components/ReviewList.jsx";
 import { getReviews } from "./api.js";
 import { ReviewForm } from "./components/ReviewForm.jsx";
 import { LocaleContext } from "./contexts/LocaleContext.js";
+import { LocaleSelect } from "./components/LocaleSelect.jsx";
 
 const LIMIT = 6;
 
@@ -65,8 +66,11 @@ function App() {
   return (
     <LocaleContext.Provider value={locale}>
       <div>
-        <button onClick={handleNewOrder}>최신순</button>
-        <button onClick={handleBestOrder}>베스트순</button>
+        <LocaleSelect value={locale} onChange={setLocale} />
+        <div>
+          <button onClick={handleNewOrder}>최신순</button>
+          <button onClick={handleBestOrder}>베스트순</button>
+        </div>
       </div>
       <ReviewForm onReviewSubmit={handleReviewSubmit} />
       {error && <div>{error}</div>}
