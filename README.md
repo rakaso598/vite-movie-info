@@ -53,4 +53,4 @@
 
 ## 메인화면 스크린샷
 
-![250226-c](https://github.com/user-attachments/assets/c11006ec-a894-4351-8fb3-e809d55c66fb)
+![250226-c](https://github.com/user-attachments/assets/ccee580a-75d3-4fa9-963d-2bbd960e4130)
