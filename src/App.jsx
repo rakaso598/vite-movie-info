@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ReviewList } from "./components/ReviewList.jsx";
 import { getReviews } from "./api.js";
+import { ReviewForm } from "./components/ReviewForm.jsx";
 
 const LIMIT = 6;
 
@@ -61,6 +62,7 @@ function App() {
         <button onClick={handleNewOrder}>최신순</button>
         <button onClick={handleBestOrder}>베스트순</button>
       </div>
+      <ReviewForm />
       {error && <div>{error}</div>} {/* 에러 메시지 표시 */}
       <ReviewList items={items} onDelete={handleDelete} />
       {hasNext && (
