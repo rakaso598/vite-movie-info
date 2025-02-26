@@ -7,8 +7,8 @@ function App() {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    handleLoad();
-  }, [])
+    handleLoad(order);
+  }, [order]) // order가 변경될 때 마다 API 재요청 하도록
 
   const sortedItems = items.sort((a, b) => b[order] - a[order]);
 
@@ -19,8 +19,8 @@ function App() {
     setItems(nextItems);
   };
 
-  const handleLoad = async () => {
-    const { reviews } = await getReviews()
+  const handleLoad = async (order) => {
+    const { reviews } = await getReviews(order);
     setItems(reviews);
   }
 
