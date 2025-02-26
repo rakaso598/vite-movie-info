@@ -104,7 +104,3 @@ react-review-app/
 3.  변경 사항을 커밋합니다. (`git commit -am 'Add new feature'`)
 4.  브랜치를 푸시합니다. (`git push origin feature/new-feature`)
 5.  풀 리퀘스트를 생성합니다.
-
-## 라이센스
-
-이 프로젝트는 MIT 라이센스를 따릅니다.
