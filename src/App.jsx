@@ -11,7 +11,7 @@ function App() {
   const [offset, setOffset] = useState(0);
   const [hasNext, setHasNext] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null); // 에러 상태 추가
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     handleLoad({ order, offset: 0, limit: LIMIT });
@@ -36,7 +36,7 @@ function App() {
 
   const handleLoad = async (options) => {
     setLoading(true);
-    setError(null); // 에러 초기화
+    setError(null);
     try {
       const { reviews, paging } = await getReviews(options);
 
@@ -46,7 +46,7 @@ function App() {
         setItems((prevItems) => [...prevItems, ...reviews]);
       }
 
-      setOffset(options.offset + reviews.length);
+      setOffset((prevOffset) => prevOffset + reviews.length);
       setHasNext(paging.hasNext);
     } catch (e) {
       console.error(e);
@@ -56,14 +56,18 @@ function App() {
     }
   };
 
+  const handleReviewSubmit = (review) => {
+    setItems((prevItems) => [review, ...prevItems]);
+  };
+
   return (
     <>
       <div>
         <button onClick={handleNewOrder}>최신순</button>
         <button onClick={handleBestOrder}>베스트순</button>
       </div>
-      <ReviewForm />
-      {error && <div>{error}</div>} {/* 에러 메시지 표시 */}
+      <ReviewForm onReviewSubmit={handleReviewSubmit} />
+      {error && <div>{error}</div>}
       <ReviewList items={items} onDelete={handleDelete} />
       {hasNext && (
         <button disabled={loading} onClick={handleLoadMore}>

@@ -8,3 +8,12 @@ export const getReviews = async ({
   const body = await res.json();
   return body;
 };
+
+export const createReview = async (formData) => {
+  const res = await fetch("https://learn.codeit.kr/0000/film-review", {
+    method: "POST",
+    body: formData,
+  });
+  const body = await res.json();
+  return body;
+};
