@@ -2,13 +2,16 @@ import { useEffect, useState } from "react";
 import { ReviewList } from "./components/ReviewList.jsx"
 import { getReviews } from "./api.js"
 
+const LIMIT = 6; // 페이지네이션
+
 function App() {
   const [order, setOrder] = useState('rating');
   const [items, setItems] = useState([]);
+  const [offset, setOffset] = useState(0);
 
   useEffect(() => {
-    handleLoad({ order, offset: 0, limit: 6 });
-  }, [order]) // order가 변경될 때 마다 API 재요청 하도록
+    handleLoad({ order, offset, LIMIT });
+  }, [order]) // order가 변경될 때 마다 API 재요청하는 동작
 
   const sortedItems = items.sort((a, b) => b[order] - a[order]);
 
