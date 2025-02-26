@@ -1,4 +1,6 @@
+import { useContext } from "react";
 import "./ReviewList.css"
+import { LocaleContext } from "../contexts/LocaleContext";
 
 export const ReviewList = ({ items, onDelete }) => {
 
@@ -19,6 +21,9 @@ const formatDate = value => {
 }
 
 const ReviewListItem = ({ item, onDelete }) => {
+
+  const locale = useContext(LocaleContext);
+
   return (
     <div className="ReviewListItem">
       <img className="ReviewListItem-img" src={item.imgUrl} alt={item.title} />
@@ -27,6 +32,7 @@ const ReviewListItem = ({ item, onDelete }) => {
         <p>{item.rating}</p>
         <p>{formatDate(item.createdAt)}</p>
         <p>{item.content}</p>
+        <p>현재 언어: {locale}</p>
         <button onClick={() => onDelete(item.id)}>삭제</button>
       </div>
     </div>
