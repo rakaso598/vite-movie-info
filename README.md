@@ -80,21 +80,21 @@
 
 ## 디렉토리 구조
 
-react-review-app/
-├── public/
-├── src/
-│ ├── components/
-│ │ ├── ReviewList.js
-│ │ ├── ReviewForm.js
-│ │ ├── LocaleSelect.js
-│ ├── hooks/
-│ │ ├── useAsync.js
-│ ├── contexts/
-│ │ ├── LocaleContext.js
-│ ├── api.js
-│ ├── App.js
-│ ├── index.js
-├── package.json
+react-review-app/  
+├── public/  
+├── src/  
+│ ├── components/  
+│ │ ├── ReviewList.js  
+│ │ ├── ReviewForm.js  
+│ │ ├── LocaleSelect.js  
+│ ├── hooks/  
+│ │ ├── useAsync.js  
+│ ├── contexts/  
+│ │ ├── LocaleContext.js  
+│ ├── api.js  
+│ ├── App.js  
+│ ├── index.js  
+├── package.json  
 ├── README.md
 
 ## 기여 방법
