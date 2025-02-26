@@ -50,3 +50,7 @@
 
 - 이 프로젝트는 사용자 리뷰 관리 앱이 아닌, 영화 데이터 API를 활용한 영화 정보 표시 및 탐색 앱입니다.
 - ReviewForm.jsx는 파일업로드 기능을 포함하고 있습니다.
+
+## 메인화면 스크린샷
+
+![250226-c](https://github.com/user-attachments/assets/c11006ec-a894-4351-8fb3-e809d55c66fb)
