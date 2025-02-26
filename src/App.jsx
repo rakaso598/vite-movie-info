@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { ReviewList } from "./components/ReviewList.jsx";
 import { getReviews } from "./api.js";
 import { ReviewForm } from "./components/ReviewForm.jsx";
+import { LocaleContext } from "./contexts/LocaleContext.js";
 
 const LIMIT = 6;
 
@@ -61,7 +62,7 @@ function App() {
   };
 
   return (
-    <>
+    <LocaleContext.Provider value={"ko"}>
       <div>
         <button onClick={handleNewOrder}>최신순</button>
         <button onClick={handleBestOrder}>베스트순</button>
@@ -74,7 +75,7 @@ function App() {
           더보기
         </button>
       )}
-    </>
+    </LocaleContext.Provider>
   );
 }
 
