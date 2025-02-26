@@ -1,44 +1,64 @@
 import { useState } from "react";
-import { FileInput } from "./FileInput.jsx";
+import { FileInput } from "./FileInput";
+import { createReview } from "../api";
 
-export const ReviewForm = ({ onReviewSubmit }) => {
-  const [title, setTitle] = useState("");
-  const [rating, setRating] = useState(0);
-  const [content, setContent] = useState("");
-  const [imgFile, setImgFile] = useState(null);
+export const ReviewForm = ({ onSubmitSuccess }) => {
+  const [values, setValues] = useState({
+    title: "",
+    rating: 0,
+    content: "",
+    imgFile: null,
+  });
 
-  const handleTitleChange = (e) => {
-    setTitle(e.target.value.toUpperCase());
+  const handleChange = (name, value) => {
+    setValues((prevValues) => ({
+      ...prevValues,
+      [name]: name === "rating" ? Number(value) || 0 : value,
+    }));
   };
 
-  const handleRatingChange = (e) => {
-    setRating(Number(e.target.value) || 0);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    handleChange(name, value);
   };
 
-  const handleContentChange = (e) => {
-    setContent(e.target.value);
-  };
-
-  const handleFileChange = (files) => {
-    setImgFile(files[0]);
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ title, rating, content, imgFile });
-    onReviewSubmit({ title, rating, content, imgFile, id: Date.now() });
-    setTitle("");
-    setRating(0);
-    setContent("");
-    setImgFile(null);
+    const formData = new FormData();
+    formData.append("title", values.title);
+    formData.append("rating", values.rating);
+    formData.append("content", values.content);
+    formData.append("imgFile", values.imgFile);
+
+    const result = await createReview(formData);
+    onSubmitSuccess(result.review);
+    setValues({
+      title: "",
+      rating: 0,
+      content: "",
+      imgFile: null,
+    });
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <input value={title} onChange={handleTitleChange} />
-      <FileInput onChange={handleFileChange} />
-      <input type="number" value={rating} onChange={handleRatingChange} />
-      <textarea value={content} onChange={handleContentChange} />
+      <FileInput
+        name="imgFile"
+        value={values.imgFile}
+        onChange={handleChange}
+      />
+      <input name="title" value={values.title} onChange={handleInputChange} />
+      <input
+        name="rating"
+        type="number"
+        value={values.rating}
+        onChange={handleInputChange}
+      />
+      <textarea
+        name="content"
+        value={values.content}
+        onChange={handleInputChange}
+      />
       <button type="submit">확인</button>
     </form>
   );

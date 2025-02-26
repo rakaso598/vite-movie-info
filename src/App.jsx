@@ -1,86 +1,78 @@
 import { useEffect, useState } from "react";
-import { ReviewList } from "./components/ReviewList.jsx";
-import { getReviews } from "./api.js";
-import { ReviewForm } from "./components/ReviewForm.jsx";
-import { LocaleContext } from "./contexts/LocaleContext.js";
-import { LocaleSelect } from "./components/LocaleSelect.jsx";
+import { ReviewList } from "./components/ReviewList";
+import { getReviews } from "./api";
+import { ReviewForm } from "./components/ReviewForm";
+import { useAsync } from "./hooks/useAsync";
+import { LocaleProvider } from "./contexts/LocaleContext";
+import { LocaleSelect } from "./components/LocaleSelect";
 
 const LIMIT = 6;
 
 function App() {
-  const [locale, setLocale] = useState("KR");
-  const [order, setOrder] = useState("rating");
+  const [order, setOrder] = useState("createdAt");
   const [items, setItems] = useState([]);
   const [offset, setOffset] = useState(0);
   const [hasNext, setHasNext] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [loading, getReviewsAsync] = useAsync(getReviews);
 
   useEffect(() => {
     handleLoad({ order, offset: 0, limit: LIMIT });
   }, [order]);
 
-  const handleNewOrder = () => {
-    setOrder("createdAt");
-  };
+  useEffect(() => {
+    console.log(loading);
+  }, [loading]);
 
-  const handleBestOrder = () => {
-    setOrder("rating");
-  };
+  const sortedItems = items.sort((a, b) => b[order] - a[order]);
 
+  const handleNewestClick = () => setOrder("createdAt");
+  const handleBestClick = () => setOrder("rating");
   const handleDelete = (id) => {
     const nextItems = items.filter((item) => item.id !== id);
     setItems(nextItems);
+  };
+
+  const handleLoad = async (options) => {
+    const result = await getReviewsAsync(options);
+
+    const { reviews, paging } = result;
+
+    if (options.offset === 0) {
+      setItems(reviews);
+    } else {
+      // setItems([...items, ...reviews]);
+      setItems((prevItems) => [...prevItems, ...reviews]);
+    }
+
+    setOffset(options.offset + reviews.length);
+    setHasNext(paging.hasNext);
   };
 
   const handleLoadMore = async () => {
     handleLoad({ order, offset, limit: LIMIT });
   };
 
-  const handleLoad = async (options) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const { reviews, paging } = await getReviews(options);
-
-      if (options.offset === 0) {
-        setItems(reviews);
-      } else {
-        setItems((prevItems) => [...prevItems, ...reviews]);
-      }
-
-      setOffset((prevOffset) => prevOffset + reviews.length);
-      setHasNext(paging.hasNext);
-    } catch (e) {
-      console.error(e);
-      setError("데이터를 불러오는 중 오류가 발생했습니다.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleReviewSubmit = (review) => {
+  const handleSubmitSuccess = (review) => {
     setItems((prevItems) => [review, ...prevItems]);
   };
 
   return (
-    <LocaleContext.Provider value={locale}>
+    <LocaleProvider defaultValue="ko">
       <div>
-        <LocaleSelect value={locale} onChange={setLocale} />
+        <LocaleSelect />
         <div>
-          <button onClick={handleNewOrder}>최신순</button>
-          <button onClick={handleBestOrder}>베스트순</button>
+          <button onClick={handleNewestClick}>최신순</button>
+          <button onClick={handleBestClick}>베스트순</button>
         </div>
+        <ReviewForm onSubmitSuccess={handleSubmitSuccess} />
+        <ReviewList items={sortedItems} onDelete={handleDelete} />
+        {hasNext && (
+          <button disabled={loading} onClick={handleLoadMore}>
+            더 보기
+          </button>
+        )}
       </div>
-      <ReviewForm onReviewSubmit={handleReviewSubmit} />
-      {error && <div>{error}</div>}
-      <ReviewList items={items} onDelete={handleDelete} />
-      {hasNext && (
-        <button disabled={loading} onClick={handleLoadMore}>
-          더보기
-        </button>
-      )}
-    </LocaleContext.Provider>
+    </LocaleProvider>
   );
 }
 

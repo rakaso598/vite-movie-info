@@ -1,11 +1,14 @@
-export const LocaleSelect = ({ value, onChange }) => {
+import { useLocale } from "../contexts/LocaleContext";
 
-  const handleChange = e => onChange(e.target.value);
+export const LocaleSelect = () => {
+  const { locale, setLocale } = useLocale();
+
+  const handleChange = (e) => setLocale(e.target.value);
 
   return (
-    <select value={value} onChange={handleChange}>
-      <option>한국어</option>
-      <option>영어</option>
+    <select value={locale} onChange={handleChange}>
+      <option value="ko">한국어</option>
+      <option value="en">영어</option>
     </select>
   );
 };
