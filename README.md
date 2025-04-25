@@ -79,7 +79,7 @@
 - 스타일링: CSS 또는 스타일링 라이브러리를 사용하여 UI 개선
 
 ## 디렉토리 구조
-
+```markdown
 react-review-app/  
 ├── public/  
 ├── src/  
@@ -96,6 +96,7 @@ react-review-app/
 │ ├── index.js  
 ├── package.json  
 ├── README.md
+```
 
 ## 기여 방법
 
